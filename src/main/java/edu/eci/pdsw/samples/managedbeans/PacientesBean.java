@@ -19,18 +19,24 @@ package edu.eci.pdsw.samples.managedbeans;
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.entities.TipoIdentificacion;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosSuscripciones;
+import edu.eci.pdsw.samples.services.ServiciosPaciente;
 import edu.eci.pdsw.samples.services.ServiciosPacientesFactory;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
 
 /**
  *
  * @author hcadavid
  */
+
 @ManagedBean(name = "mb")
 @SessionScoped
-public class PacientesBean {
+public class PacientesBean extends BasePageBean {
+
+    @Inject
+    ServiciosPaciente serviciosPaciente;
 
     TipoIdentificacion tipoIdentificacion = TipoIdentificacion.CC;
 
@@ -44,7 +50,7 @@ public class PacientesBean {
 
     public List<Paciente> getData() throws Exception{
         try {
-            return ServiciosPacientesFactory.getInstance().getForumsServices().consultarPacientes();
+            return serviciosPaciente.consultarPacientes();
         } catch (ExcepcionServiciosSuscripciones ex) {
             
             throw ex;

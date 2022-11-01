@@ -10,6 +10,7 @@
         <id property='tipo_id' column='tipo_id' typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
         <result property='fechaNacimiento' column='fecha_nacimiento'/>
         <result property='nombre' column='nombre'/>
+        <collection property="Consulta" javaType="Consulta" resultMap=""/>
     </resultMap>
 
     <select id="getPacientes" resultMap="PacienteResult">
@@ -20,5 +21,14 @@
             p.nombre
         FROM
             PACIENTES as p
+    </select>
+
+    <select id="getPacienteById" resultMap="PacienteResult">
+        SELECT
+        p.fecha_nacimiento,
+        p.nombre
+        FROM
+        PACIENTES as p WHERE
+        (id == #{id})
     </select>
 </mapper>
