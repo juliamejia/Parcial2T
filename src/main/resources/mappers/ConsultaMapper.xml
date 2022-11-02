@@ -7,11 +7,12 @@
 
     <resultMap type='Consulta' id='ConsultaResult'>
         <id property='id' column='idCONSULTAS'/>
+        <result property='fechayHora' column='fecha_y_hora'/>
+        <result property='resumen' column='resumen'/>
+<!--        <result property='P' column='PACIENTES_id'/>-->
+<!--        <result property='fechaNacimiento' column='PACIENTES_tipo_id'/>-->
 
-        <result property='fechaNacimiento' column='fecha_nacimiento'/>
-        <result property='nombre' column='nombre'/>
-        <association property='tipo_id' column='PACIENTES_tipo_id' typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
-        <association property='tipo_id' column='tipo_id' typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+
 
     </resultMap>
 
