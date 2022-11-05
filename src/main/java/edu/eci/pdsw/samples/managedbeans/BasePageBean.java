@@ -5,11 +5,9 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-
 import com.google.inject.Injector;
 
 public abstract class BasePageBean implements Serializable {
-
     private static final long serialVersionUID = -2084921068710522276L;
     private Injector injector;
 

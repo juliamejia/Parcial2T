@@ -1,64 +1,74 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package edu.eci.pdsw.samples.services;
 
-import static com.google.inject.Guice.createInjector;
-
-import java.util.Optional;
-
-import edu.eci.pdsw.samples.persistence.DaoPaciente;
-import edu.eci.pdsw.samples.persistence.mybatisimpl.MyBatisDAOPaciente;
-import edu.eci.pdsw.samples.services.impl.ServiciosPacienteImpl;
 import org.mybatis.guice.XMLMyBatisModule;
 import org.mybatis.guice.datasource.helper.JdbcHelper;
 
+import static com.google.inject.Guice.createInjector;
 import com.google.inject.Injector;
+import edu.eci.pdsw.samples.persistence.DaoPaciente;
+import edu.eci.pdsw.samples.persistence.mybatisimpl.MyBatisDAOPaciente;
+import edu.eci.pdsw.samples.services.impl.ServiciosPacienteImpl;
 
-
-
+/**
+ *
+ * @author hcadavid
+ */
 public class ServiciosPacientesFactory {
 
     private static ServiciosPacientesFactory instance = new ServiciosPacientesFactory();
 
-    private static Optional<Injector> optInjector = Optional.empty();
+    private static Injector injector;
+    private static Injector testingInjector;
 
-    private Injector myBatisInjector(String env, String pathResource, JdbcHelper jdbcHelper) {
-        return createInjector(new XMLMyBatisModule() {
+    private ServiciosPacientesFactory() {
+        injector = createInjector(new XMLMyBatisModule() {
+
             @Override
             protected void initialize() {
-                setEnvironmentId(env);
-                install(jdbcHelper);
-                setClassPathResource(pathResource);
+                install(JdbcHelper.MySQL);
+                setClassPathResource("mybatis-config.xml");
+                bind(ServiciosPaciente.class).to(ServiciosPacienteImpl.class);
+                bind(DaoPaciente.class).to(MyBatisDAOPaciente.class);
 
+            }
+
+        }
+        );
+
+        testingInjector = createInjector(new XMLMyBatisModule() {
+
+            @Override
+            protected void initialize() {
+                install(JdbcHelper.MySQL);
+                setClassPathResource("mybatis-config-h2.xml");
                 bind(ServiciosPaciente.class).to(ServiciosPacienteImpl.class);
                 bind(DaoPaciente.class).to(MyBatisDAOPaciente.class);
             }
-        });
-    }
 
-    private ServiciosPacientesFactory() {
-    }
-
-    public ServiciosPaciente getServiciosPaciente(){
-        if (!optInjector.isPresent()) {
-            optInjector = Optional.of(myBatisInjector("development","mybatis-config.xml", JdbcHelper.MySQL));
         }
+        );
 
-        return optInjector.get().getInstance(ServiciosPaciente.class);
     }
 
-
-    public ServiciosPaciente getBlogServicesTesting(){
-        if (!optInjector.isPresent()) {
-            optInjector = Optional.of(myBatisInjector("test","mybatis-config-h2.xml", JdbcHelper.H2_FILE));
-        }
-
-        return optInjector.get().getInstance(ServiciosPaciente.class);
+    public ServiciosPaciente getForumsServices() {
+        return injector.getInstance(ServiciosPaciente.class);
     }
 
+    public ServiciosPaciente getTestingForumServices() {
+        return testingInjector.getInstance(ServiciosPaciente.class);
+    }
 
-
-    public static ServiciosPacientesFactory getInstance(){
+    public static ServiciosPacientesFactory getInstance() {
         return instance;
     }
 
-}
+    public static void main(String a[]) throws ExcepcionServiciosSuscripciones {
+        System.out.println(ServiciosPacientesFactory.getInstance().getForumsServices().consultarPacientes());
+    }
 
+}

@@ -16,6 +16,7 @@
  */
 package edu.eci.pdsw.samples.managedbeans;
 
+import com.google.inject.Inject;
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.entities.TipoIdentificacion;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosSuscripciones;
@@ -23,20 +24,38 @@ import edu.eci.pdsw.samples.services.ServiciosPaciente;
 import edu.eci.pdsw.samples.services.ServiciosPacientesFactory;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.inject.Inject;
 
 /**
  *
  * @author hcadavid
  */
-
 @ManagedBean(name = "mb")
 @SessionScoped
-public class PacientesBean extends BasePageBean {
+public class PacientesBean extends BasePageBean{
 
     @Inject
-    ServiciosPaciente serviciosPaciente;
+    private ServiciosPaciente serviciosPaciente;
+
+    private Paciente enfermo;
+    private int id;
+
+    public Paciente getEnfermo() {
+        return enfermo;
+    }
+
+    public void setEnfermo(Paciente enfermo) {
+        this.enfermo = enfermo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     TipoIdentificacion tipoIdentificacion = TipoIdentificacion.CC;
 
@@ -48,18 +67,18 @@ public class PacientesBean extends BasePageBean {
         return tipoIdentificacion;
     }
 
-    public List<Paciente> getData() throws Exception{
+    public void getData(int id) throws Exception {
         try {
-            return serviciosPaciente.consultarPacientes();
+            setEnfermo(serviciosPaciente.consultarPacientesPorId(id, tipoIdentificacion));
+
+            System.out.println(enfermo.getNombre());
         } catch (ExcepcionServiciosSuscripciones ex) {
-            
             throw ex;
         }
-        
     }
 
     public TipoIdentificacion[] getTiposIdentificacion() {
         return TipoIdentificacion.values();
     }
-    
+
 }

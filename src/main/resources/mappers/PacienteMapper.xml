@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="edu.eci.pdsw.samples.persistence.mybatisimpl.mappers.PacienteMapper">
 
     <resultMap type='Paciente' id='PacienteResult'>
-        <id property='id' column='id'/>        
+        <id property='id' column='id'/>
         <id property='tipo_id' column='tipo_id' typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
         <result property='fechaNacimiento' column='fecha_nacimiento'/>
         <result property='nombre' column='nombre'/>
-        <collection property="consultas" javaType="ArrayList" ofType="Consulta" resultMap="edu.eci.pdsw.samples.persistence.mybatisimpl.mappers.ConsultaMapper.ConsultaResult" columnPrefix="co_"/>
+        <collection property="consultas" javaType="ArrayList" ofType="Consulta"
+                    resultMap="edu.eci.pdsw.samples.persistence.mybatisimpl.mappers.PacienteMapper.ConsultaResult"
+                    columnPrefix="co_"/>
     </resultMap>
+
+
+    <resultMap type='Consulta' id='ConsultaResult'>
+        <id property='id' column='idCONSULTAS'/>
+        <result property='fechayHora' column='fecha_y_hora'/>
+        <result property='resumen' column='resumen'/>
+    </resultMap>
+
 
     <select id="getPacientes" resultMap="PacienteResult">
         SELECT
-            p.id,
-            p.tipo_id,
-            p.fecha_nacimiento,
-            p.nombre
+        P.id,
+        P.tipo_id,
+        P.fecha_nacimiento,
+        P.nombre
         FROM
-            PACIENTES as p
+        PACIENTES as P
     </select>
 
-    <select id="getPacienteById" resultMap="PacienteResult">
-        SELECT p.id, p.tipo_id, p.nombre, p.fecha_nacimiento, co.idCONSULTAS as co_id,
+    <select id="getPacienteByIDandTypeID" resultMap="PacienteResult">
+        SELECT p.id,
+        p.tipo_id,
+        p.nombre,
+        p.fecha_nacimiento,
+        co.idCONSULTAS as co_id,
         co.fecha_y_hora as co_fecha_y_hora,
-        co.resumen as co_resumen, co.PACIENTES_id as co_PACIENTE_id, co.PACIENTES_tipo_id as co_PACIENTES_tipo_id
+        co.resumen as co_resumen,
+        co.PACIENTES_id as co_PACIENTE_id,
+        co.PACIENTES_tipo_id as co_PACIENTES_tipo_id
         FROM
         PACIENTES as p
         JOIN CONSULTAS as co ON p.id = co.PACIENTES_id

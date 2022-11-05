@@ -15,11 +15,11 @@ public interface ServiciosPaciente {
     /**
      * Consultar todos los pacientes
      * @return
-     * @throws ExcepcionServiciosSuscripciones 
+     * @throws ExcepcionServiciosSuscripciones
      */
     public List<Paciente> consultarPacientes() throws ExcepcionServiciosSuscripciones;
-        
-    
+
+
     /**
      * Consulta un paciente a partir de su numero y tipo de identificacion
      * @param id numero de identificacion
@@ -30,15 +30,16 @@ public interface ServiciosPaciente {
      * identificacion, o si se presenta otro problema en las capas inferiores.
      */
     public Paciente consultarPacientesPorId(int id, TipoIdentificacion tipoIdentificacion) throws ExcepcionServiciosSuscripciones;
-    
+
     /**
      * Consulta los pacientes menores de edad que han tenido enfermedades contagiosas
+     *
      * @return el listado de pacientes menores de edad que han tenido enfermedades contagiosas,
      * es decir, que tengan consultas que contengan en su texto palabras 'hepatitis' o
      * 'varicela'
      * @throws ExcepcionServiciosSuscripciones si se presenta otro problema en las capas inferiores.
      */
     public List<Paciente> consultarMenoresConEnfermedadContagiosa() throws ExcepcionServiciosSuscripciones;
-    
+
 
 }

@@ -32,26 +32,19 @@ public class Paciente {
     private TipoIdentificacion tipo_id;
     private String nombre;
     private Date fechaNacimiento;
-    private List<Consulta> consultas;
+    List<Consulta> consultas;
     
-
-    public Paciente(int id, TipoIdentificacion tipo_id, String nombre, Date fechaNacimiento, List<Consulta> consultas) {
-        this.id = id;
-        this.tipo_id = tipo_id;
-        this.nombre = nombre;
-        this.fechaNacimiento = fechaNacimiento;
-        this.consultas= consultas;
-    }
 
     public Paciente(int id, TipoIdentificacion tipo_id, String nombre, Date fechaNacimiento) {
         this.id = id;
         this.tipo_id = tipo_id;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
-        this.consultas= new ArrayList<>();
+        consultas=new ArrayList<>();
     }
 
     public Paciente() {
+        consultas=new ArrayList<>();
     }
 
     public int getId() {

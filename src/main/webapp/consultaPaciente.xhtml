@@ -9,15 +9,21 @@
         <title></title>
     </h:head>
     <h:body>
-        <h1>TITULO</h1>
-        <h:form>
+        <h1>CONSULTAS</h1>
+        <h:form id="pacientes">
             <!--Por favor no cambiar el 'id':-->
+<!--            <p:inputText id="identificacion_paciente" value="#{mb.id}"></p:inputText>-->
             <p:inputText id="identificacion_paciente"></p:inputText>
             <p:selectOneMenu value="#{mb.tipoIdentificacion}" >
                 <f:selectItems value="#{mb.tiposIdentificacion}" />
             </p:selectOneMenu>
             <!--Por favor no cambiar el 'value':-->
-            <p:commandButton value="Consultar"></p:commandButton>
+            <p:commandButton value="Consultar" actionListener="#{mb.getData(9876)}" update="pacientes"> </p:commandButton>
+            <br> </br>
+            <p:outputLabel  value= "Nombre :"/>
+                <h:outputText value="#{mb.enfermo.getNombre()}" ></h:outputText>
+            <br> </br>
+<!--            <p:outputLabel  value= "Id : #{mb.enfermo.getId()}"/>-->
         </h:form>
     </h:body>
 </html>

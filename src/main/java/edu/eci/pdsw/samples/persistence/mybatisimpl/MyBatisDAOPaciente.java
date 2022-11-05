@@ -23,6 +23,8 @@ import edu.eci.pdsw.samples.entities.TipoIdentificacion;
 import edu.eci.pdsw.samples.persistence.DaoPaciente;
 import edu.eci.pdsw.samples.persistence.PersistenceException;
 import edu.eci.pdsw.samples.persistence.mybatisimpl.mappers.PacienteMapper;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -38,9 +40,10 @@ public class MyBatisDAOPaciente implements DaoPaciente {
     @Override
     public Paciente load(int id, TipoIdentificacion tipoIdentificacion) throws PersistenceException {
         try{
-            return pacienteMapper.getPacienteById(id, tipoIdentificacion);
-        }catch (Exception e){
-            throw new PersistenceException("Error");
+            return pacienteMapper.getPacienteByIDandTypeID(id, tipoIdentificacion);
+        }
+        catch(Exception e){
+            throw new PersistenceException("Error al consultar los pacientes:"+e.getLocalizedMessage(), e);
         }
     }
 

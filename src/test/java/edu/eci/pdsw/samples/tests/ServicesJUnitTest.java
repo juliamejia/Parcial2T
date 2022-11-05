@@ -18,6 +18,7 @@ package edu.eci.pdsw.samples.tests;
 
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.entities.Consulta;
+import edu.eci.pdsw.samples.entities.TipoIdentificacion;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosSuscripciones;
 import edu.eci.pdsw.samples.services.ServiciosPacientesFactory;
 import java.sql.Connection;
@@ -25,6 +26,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.sql.Date;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -57,14 +59,14 @@ public class ServicesJUnitTest {
     /**
      * Obtiene una conexion a la base de datos de prueba
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     private Connection getConnection() throws SQLException{
         return DriverManager.getConnection("jdbc:h2:file:./target/db/testdb;MODE=MYSQL", "anonymous", "anonymous");
     }
-    
+
     @Test
-    public void pruebaCeroTest() throws SQLException, ExcepcionServiciosSuscripciones {
+    public void dadoUnPacienteCuandoSeConsultaDeberiaObtenerseSusDatos() throws SQLException, ExcepcionServiciosSuscripciones {
         //Insertar datos en la base de datos de pruebas, de acuerdo con la clase
         //de equivalencia correspondiente
         Connection conn=getConnection();
@@ -75,20 +77,15 @@ public class ServicesJUnitTest {
 
         conn.commit();
         conn.close();
-	
-        //Realizar la operacion de la logica y la prueba
-        
-        
-        List<Paciente> pacientes = ServiciosPacientesFactory.getInstance().getTestingForumServices().consultarPacientes();
 
-        
-        for (Paciente paciente : pacientes){
-            System.out.println(paciente);
-        }
+        //Realizar la operacion de la logica y la prueba
+
+        Paciente paciente = ServiciosPacientesFactory.getInstance().getTestingForumServices().consultarPacientesPorId(9876, TipoIdentificacion.TI);
         //assert ...
-        Assert.fail("Pruebas no implementadas aun...");
-        
-    }    
-    
+        Assert.assertEquals(paciente.getNombre(), "Carmenzo");
+        Assert.assertEquals(paciente.getFechaNacimiento(),Date.valueOf("1995-07-10") );
+
+    }
+
 
 }
